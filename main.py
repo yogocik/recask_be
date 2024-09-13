@@ -144,10 +144,7 @@ def get_query_answer(query: UserCustomQuery):
     doc_ids = ','.join(set([str(doc.metadata['id']) for doc in docs]))
     if len(docs) <= 0:
         return {"status": "UNIDENTIFIED",
-                "data": {
-                    "selection": [],
-                    "recommendation": []
-                }}
+                "data": []}
     # Take all items mentioned in enriched contents
     enriched_movies = get_movies_by_ids(doc_ids)
     # Combine with prompts (question + enrichments)
