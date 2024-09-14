@@ -35,7 +35,7 @@ app.add_middleware(
 )
 
 # Initiate DB
-credentials = service_account.Credentials.from_service_account_file('./secrets/svc_acc.json')
+credentials = service_account.Credentials.from_service_account_file(f"{os.getenv('SECRET_PATH')}/svc_acc.json")
 BQClient = bigquery.Client(
     credentials= credentials,
     project=credentials.project_id
