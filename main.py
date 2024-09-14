@@ -56,7 +56,7 @@ BQVectorDB = BigQueryVectorStore(
         )
 
 
-def retrieve_from_vector_db(query:str, limit:int=10) -> List[Document] | List:
+def retrieve_from_vector_db(query:str, limit:int=10) -> List[Document]:
     docs = BQVectorDB.similarity_search(query=query,
                                         k=limit)
     return docs
