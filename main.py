@@ -169,7 +169,7 @@ def get_query_answer(query: UserCustomQuery):
     selected = [{**data, 'is_answer': True} for data in enriched_movies if str(data['id']) in split]
     recommended = [{**data, 'is_answer': False} for data in enriched_movies if str(data['id']) not in split]
     data = [*selected, *recommended]
-    data.sort(reverse=True,  key=lambda x: f'{(int(x['is_answer']))}{int(x['id'])}')
+    data.sort(reverse=True,  key=lambda x: f"{(int(x['is_answer']))}{int(x['id'])}")
     return {"status": "OK", 
             # "response": response, 
             # "raw": enriched_movies,
