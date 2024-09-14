@@ -78,7 +78,10 @@ def get_all_selected_movies() -> List[Dict[str,str]]:
     # Fetch data
     data = execute_query(query)
     #  Convert to dict and return
-    return data.to_dict(orient='records')
+    res = [{**x,
+            #'is_answer':False
+            } for x in data.to_dict(orient='records')]
+    return res
 
 
 def get_paginated_movies(page:int = 1, limit:int = 10) -> List[Dict[str,str]]:
@@ -162,14 +165,16 @@ def get_query_answer(query: UserCustomQuery):
     response = chain.run({"context": enriched_movies, "query": query.query})
     match = re.search(r'\[(.*?)\]', response)
     split = [x.strip() for x in match.group(1).split(",")] if match else []
-    # print('LLM Response\n', response)
+    print('LLM Response\n', response)
     selected = [{**data, 'is_answer': True} for data in enriched_movies if str(data['id']) in split]
     recommended = [{**data, 'is_answer': False} for data in enriched_movies if str(data['id']) not in split]
+    data = [*selected, *recommended]
+    data.sort(reverse=True,  key=lambda x: f'{(int(x['is_answer']))}{int(x['id'])}')
     return {"status": "OK", 
             # "response": response, 
             # "raw": enriched_movies,
             # "split": split,
-            "data": [*selected, *recommended]
+            "data": data
         }
 
 if __name__ == '__main__':
